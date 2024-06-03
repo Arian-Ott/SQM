@@ -1,0 +1,8 @@
+venv
+env.env
+Dockerfile
+dev
+staticfiles
+.idea
+auth0/migrations
+home/migrations

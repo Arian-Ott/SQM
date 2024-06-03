@@ -1,0 +1,16 @@
+version: '3.8'
+volumes:
+  data:
+services:
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: sqm
+      MYSQL_DATABASE: sqm
+      MYSQL_USER: sqm-user
+      MYSQL_PASSWORD: sqm
+    volumes:
+      - data:/var/lib/mysql
+      - ./dev/mariadb:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"

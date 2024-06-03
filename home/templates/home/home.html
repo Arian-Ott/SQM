@@ -1,0 +1,44 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block content %}
+<div class="container " >
+    <div class="row">
+        <div class="col col-login mx-auto theme-icon-when-auto">
+            <form class="card" action="" method="post">
+                {% csrf_token %}
+                <div class="card-body p-6 theme-toggle  " >
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="text-center p-6">
+                                    <img src="{% static 'assets/img/img.png' %}" alt="Logo" />
+
+                                    <div class="text-center mt-5">
+<h1 >SQM</h1>
+                                        <p>Version: {{ version }} </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="card-title">SQM Manager</div>
+                                <div class="form-group">
+                                    <label class="form-label">E-Mail</label>
+                                    <input name="identity" type="email" class="form-control" placeholder="admin@sqm.example" required autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Password</label>
+                                    <input name="secret" type="password" class="form-control" placeholder="admin" required>
+                                    <div class="invalid-feedback secret-error"></div>
+                                </div>
+                                <div class="form-footer">
+                                    <button type="submit" class="btn btn-teal btn-block">Sign in</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

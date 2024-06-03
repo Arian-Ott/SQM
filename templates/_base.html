@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+
+        function checker_storage() {
+            if (localStorage.getItem("lightAttractsBugs") === "dark") {
+                document.body.setAttribute("data-bs-theme", "dark");
+                document.getElementById("drk").style.display = "none";
+                document.getElementById("lig").style.removeProperty("display");
+
+            } else {
+                document.body.setAttribute("data-bs-theme", "light");
+                document.getElementById("lig").style.removeProperty("display");
+                document.getElementById("drk").style.display = "none";
+            }
+        }
+
+
+        function checker() {
+            if (document.body.getAttribute("data-bs-theme") === "") {
+                document.body.setAttribute("data-bs-theme", "dark");
+                localStorage.setItem("lightAttractsBugs", "dark");
+            }
+        }
+
+        function darkmode() {
+
+
+            let realMode = document.body.getAttribute("data-bs-theme");
+            localStorage.setItem("lightAttractsBugs", realMode);
+
+
+            if (localStorage.getItem("lightAttractsBugs") === "dark") {
+                mode = "light";
+            } else {
+                mode = "dark";
+            }
+            localStorage.setItem("lightAttractsBugs", mode);
+            document.body.setAttribute("data-bs-theme", mode);
+            checker_storage();
+        }
+    </script>
+    <meta charset="UTF-8">
+    <title>{% block title %}
+    	
+    {% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+   <link rel="stylesheet" href="{% static 'css/tabler.css' %}"> 
+
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
+
+</head>
+<body onloadstart="checker_storage()" onload="checker_storage()" onstorage="checker_storage()"
+      onchange="checker_storage()" data-bs-theme="dark"></body>
+{% include "_nav_logged_out.html" %}
+<div class="page-main">
+    <div class="my-3 my-md-5">
+        <div id="app-content" class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends '_base.html' %}
+{% load crispy_forms_filters %} {% block title %}Sign Up{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% if check == 1 %}
+    <div class="alert alert-important alert-danger " role="alert">
+  <div class="d-flex">
+    <div>
+
+
+    </div>
+    <div>
+        No sudo-user found. Creating sudo account for this instance.
+    </div>
+  </div>
+
+</div>
+    {% endif %}
+
+<form method="post">
+  {% csrf_token %}{{form | crispy }}
+  Have an account? Login <a href="/login">Here</a>!
+  <button type="submit" class="btn btn-success">Register</button>
+</form>
+{% endblock %}
