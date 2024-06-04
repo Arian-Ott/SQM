@@ -10,10 +10,14 @@ from django.shortcuts import redirect, render
 from SQM import settings
 from .forms import DBCreateForm, DBUserForm
 
+
+
 def encrypt(data):
+    settings.FERNET_KEY = Fernet.generate_key()
     return urlsafe_b64encode(Fernet(settings.FERNET_KEY).encrypt(str(data).encode("utf-8"))).decode('utf-8')
 
 def decrypt(data):
+
     return Fernet(settings.FERNET_KEY).decrypt(urlsafe_b64decode(data).decode("utf-8")).decode("utf-8")
 
 def prefunction(request):
@@ -28,7 +32,10 @@ def create_db(request):
         form = DBCreateForm(request.POST)
         if form.is_valid():
             form.full_clean()
-            form.save(commit=True)
+            frm = form.save(commit=False)
+            frm.owner = request.user
+            form.save()
+
             try:
 
                 conn = pymysql.connect(host=form.cleaned_data['db_host'], user=form.cleaned_data['db_root'],
@@ -53,6 +60,7 @@ def create_db_user(request, temp):
 
 
     data = eval(decrypt(temp))
+
     print(data)
     conn = pymysql.connect(host=data["db_host"], port=data["db_port"], user=data["db_root"], password=data["root_pw"],
                            db=data["name"])
@@ -67,12 +75,24 @@ def create_db_user(request, temp):
 
             data["username"] = form.cleaned_data.get("username")
             data["password"] = form.cleaned_data.get("password")
-            print(data)
 
+            try:
+                with conn.cursor() as cur:
+                    # Create user query
+                    create_user_query = "CREATE USER %s@'%%' IDENTIFIED BY %s;"
+                    cur.execute(create_user_query, (data["username"], data["password"]))
+                    conn.commit()
+
+                    # Grant privileges query
+                    grant_privileges_query = "GRANT ALL PRIVILEGES ON `%s`.* TO %s@'%%';"
+                    cur.execute(grant_privileges_query, (data["name"], data["username"]))
+                    conn.commit()
+            finally:
+                conn.close()
             return redirect(f"/dashboard/overview/{encrypt(data)}")
     return render(request, "dashboard/create_user.html", context={"form": DBUserForm()})
 
-
+@login_required(login_url='/login', redirect_field_name='n')
 def overview(request, temp):
     data = eval(decrypt(temp))
 

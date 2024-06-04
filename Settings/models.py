@@ -16,9 +16,9 @@ class DB(models.Model):
     db_host = models.CharField(max_length=255)
     db_port = models.IntegerField()
     db_root = models.CharField(max_length=255)
-
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     root_pw = models.CharField(max_length=255)
-    secret_key = models.TextField()
+    secret_key = models.BinaryField()
     salt = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -47,13 +47,16 @@ class Token(models.Model):
         super().save(*args, **kwargs)
 
 class DBUser(models.Model):
-
+    #db_schema = models.ForeignKey(DB, on_delete=models.CASCADE)
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=512)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     active = models.BooleanField(default=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
     def save(self, *args, **kwargs):
-        self.password = Fernet(b'6_aL5DmZQs41gHSEIXsu-uKEeq9FOqDkPU77JS5yWJ0=').encrypt(str(self.password).encode()).hex()
-        super().save(*args,**kwargs )
+
+        self.fernet = Fernet.generate_key()
+        self.password = Fernet(self.fernet).encrypt(self.password.encode()).hex()
+        super().save(*args, **kwargs)
 

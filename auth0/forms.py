@@ -8,9 +8,10 @@ class SuperUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=20, required=True)
     last_name = forms.CharField(max_length=20, required=True)
     phone_number = forms.CharField(max_length=20, required=True)
-
+    security_key = forms.CharField(max_length=255, required=True, help_text="Please input a security key which will be used to reset your account. This version does not support a mail system. Please keep your security key at a place where you will find it later. Without this key there is no way of recovering your account.")
     class Meta:
         model = User
+
 
         fields = [
             "username",
@@ -20,6 +21,7 @@ class SuperUserCreationForm(UserCreationForm):
             "email",
             "password1",
             "password2",
+            "security_key"
         ]
 
 
