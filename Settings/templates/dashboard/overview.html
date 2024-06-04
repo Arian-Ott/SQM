@@ -1,0 +1,67 @@
+{% extends "_nav_logged_in.html" %}
+{% load static %}
+{% block menu %}
+    {% if not auth %}
+        <a href="/login">Login</a>
+
+    {% else %}
+        <span> Hello, {{ username }}</span>
+        <div></div>
+
+    {% endif %}
+{% endblock %}
+{% block main %}
+
+
+    <div class="container ">
+        <div class="row">
+            <div class="col col-login mx-auto theme-icon-when-auto">
+                <div class="card">
+
+                    <div class="card-body p-6 theme-toggle  ">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="card-title align-content-center center"><h1>Database Overview</h1></div>
+                                <div class="card-body">
+                                    <strong>Overview</strong>
+                                    <table>
+                                        <tr>
+                                            <td>Database:</td><td>{{ db_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Host: </td><td>{{ db_host }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Port: </td> <td>{{ db_port }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Username: </td>
+                                            <td>{{ username }}</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>User Password: </td>
+                                            <td>{{ password }}</td>
+                                        </tr>
+
+                                    </table>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}

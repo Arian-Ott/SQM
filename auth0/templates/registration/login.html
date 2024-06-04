@@ -1,6 +1,7 @@
 {% extends '_nav_logged_out.html' %}
 {% load crispy_forms_filters %} {% block title %}Login{% endblock %}
 {% load crispy_forms_tags %}
+
  {% block menu %}
         {% if not auth %}
             <a href="/login">Login</a>

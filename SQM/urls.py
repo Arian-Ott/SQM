@@ -25,4 +25,5 @@ urlpatterns = [
     path("hello/", sign_up, name="hello"),
     path("logout/", logout_usr, name="logout"),
     path("", include("django.contrib.auth.urls")),
+    path("dashboard/", include("Settings.urls"))
 ]

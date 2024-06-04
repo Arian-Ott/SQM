@@ -1,0 +1,26 @@
+{% extends '_nav_logged_in.html' %}
+{% load crispy_forms_filters %} {% block title %}Sign Up{% endblock %}
+{% load crispy_forms_tags %}
+{% block main %}
+
+    {% if error%}
+    <div class="alert alert-danger alert-info " role="alert">
+  <div class="d-flex">
+    <div>
+
+
+    </div>
+    <div>
+        {{ error }}
+    </div>
+  </div>
+
+</div>
+    {% endif %}
+
+<form method="post">
+  {% csrf_token %}{{form | crispy }}
+
+  <button type="submit" class="btn btn-success">Create DB</button>
+</form>
+{% endblock %}

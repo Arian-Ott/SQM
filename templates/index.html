@@ -154,14 +154,21 @@
             </div>
             <div class="nav-item dropdown">
 
-
-
+                <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
+                   aria-label="Open user menu">
                   <!--  <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000f.jpg)"></span> -->
 
                {% block menu %}
                     {% endblock %}
                 </a>
-
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <a href="#" class="dropdown-item">Status</a>
+                    <a href="./profile.html" class="dropdown-item">Profile</a>
+                    <a href="#" class="dropdown-item">Feedback</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="./settings.html" class="dropdown-item">Settings</a>
+                    <a href="/logout" class="dropdown-item">Logout</a>
+                </div>
             </div>
         </div>
         <div class="collapse navbar-collapse" id="navbar-menu">
@@ -170,20 +177,44 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="./#">
                               <span class="nav-link-title">
-                                Login
+                                Home
                               </span>
                         </a>
                     </li>
-                       <li class="nav-item ">
-                        <a class="nav-link" href="/hello">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./#">
                               <span class="nav-link-title">
-                                Register
+                                Second
+                              </span>
+                            <span class="badge badge-sm bg-red">2</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#navbar-third" data-bs-toggle="dropdown"
+                           data-bs-auto-close="outside" role="button" aria-expanded="false">
+                              <span class="nav-link-title">
+                                Third
+                              </span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="./#">
+                                First
+                            </a>
+                            <a class="dropdown-item" href="./#">
+                                Second
+                            </a>
+                            <a class="dropdown-item" href="./#">
+                                Third
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="./#">
+                              <span class="nav-link-title">
+                                Disabled
                               </span>
                         </a>
                     </li>
-
-
-
                 </ul>
             </div>
         </div>

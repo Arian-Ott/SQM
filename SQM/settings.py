@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-
+from cryptography.fernet import Fernet
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,7 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-z@k4l05tf+rjft3&u(lz(s1*u@3fw#5n=gp^lbrhn$_=&3sskc"
-
+FERNET_KEY = Fernet.generate_key()
+DEFAULT_FERNET_KEY = Fernet.generate_key()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     "auth0",
     "crispy_forms",
     "crispy_bootstrap5",
+    "Settings"
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+
 ]
 
 ROOT_URLCONF = "SQM.urls"
@@ -71,6 +74,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+
             ],
         },
     },
@@ -89,7 +93,7 @@ DATABASES = {
             "user": "root",
             "host": "127.0.0.1",
             "password": "sqm",
-            "database": "sqm",
+            "database": "sqm-test",
         },
     }
 }
