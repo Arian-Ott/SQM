@@ -1,6 +1,5 @@
 /venv
 env.env
-Dockerfile
 /dev
 /staticfiles
 /.idea
