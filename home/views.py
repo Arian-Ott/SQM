@@ -20,5 +20,7 @@ def index(request):
     data["auth"] = 1
     data["username"] = request.user.username
 
-
-    return render(request, "home/home_1.html", context=data)
+    if request.user.is_authenticated:
+        return render(request, "home/home_1.html", context=data)
+    else:
+        return render(request, "home/home.html", context=data)
