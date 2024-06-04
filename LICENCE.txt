@@ -26,7 +26,7 @@ Commercial use of the Source Code or its derivatives is permitted provided the r
 
 6. Restrictions
 
-a. No AI Crawling: You may not use the Source Code or any derivative thereof for the purpose of data mining or data extraction intended for an Artificial Intelligence or Machine Learning system without explicit written consent from the Licensor.
+a. No AI Crawling: You may not use the Source Code or any derivative thereof for the purpose of data mining or data extraction intended for an Artificial Intelligence or Machine Learning system or web scraping systems or similar without explicit written consent from the Licensor.
 b. If You distribute the Source Code or any derivative works, such distribution must occur under the same terms and conditions of this License.
 7. Disclaimer of Warranty
 Unless required by applicable law or agreed to in writing, Licensor provides the Source Code (and any derivative works) on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE.
