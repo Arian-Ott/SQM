@@ -16,11 +16,11 @@ def sign_up(request):
             form = RegisterForm(request.POST)
         else:
             form = SuperUserCreationForm(request.POST)
-            #request.user.user_permissions.add(Permission.objects.get(codename="su"))
+            # request.user.user_permissions.add(Permission.objects.get(codename="su"))
 
         if form.is_valid():
             user = form.save()
-            if check ==1:
+            if check == 1:
                 usr = User.objects.get(username=user.username)
                 usr.is_superuser = True
                 usr.save()
@@ -33,6 +33,7 @@ def sign_up(request):
         form = SuperUserCreationForm()
 
     return render(request, "registration/sign_up.html", {"form": form, "check": check})
+
 
 
 def logout_usr(request):

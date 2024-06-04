@@ -6,7 +6,12 @@ import dotenv
 
 
 # Create your views here.
-@login_required(login_url='/login')
+def prefunction(request):
+    if len(get_user_model().objects.all()) == 0:
+        return redirect("/hello")
+    return index(request)
+
+@login_required(login_url="/login")
 def index(request):
     dotenv.load_dotenv("./env.env")
     data = {}
@@ -15,6 +20,5 @@ def index(request):
     data["auth"] = 1
     data["username"] = request.user.username
 
-    if len(get_user_model().objects.all()) == 0:
-        return redirect("/hello")
+
     return render(request, "home/home_1.html", context=data)
