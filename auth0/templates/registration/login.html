@@ -1,6 +1,16 @@
-{% extends '_base.html' %}
+{% extends '_nav_logged_out.html' %}
 {% load crispy_forms_filters %} {% block title %}Login{% endblock %}
-{% load crispy_forms_tags %} {% block content %}
+{% load crispy_forms_tags %}
+ {% block menu %}
+        {% if not auth %}
+            <a href="/login">Login</a>
+
+        {% else %}
+       <span> Hello, {{ username }}</span>
+        {% endif %}
+        {% endblock %}
+
+{% block main %}
 <form method="post">
   {% csrf_token %}{{form | crispy}}
   Don't have an account? Create one <a href="/hello">Here</a>!

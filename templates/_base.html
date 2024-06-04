@@ -55,16 +55,11 @@
 
 </head>
 <body onloadstart="checker_storage()" onload="checker_storage()" onstorage="checker_storage()"
-      onchange="checker_storage()" data-bs-theme="dark"></body>
-{% include "_nav_logged_out.html" %}
-<div class="page-main">
-    <div class="my-3 my-md-5">
-        <div id="app-content" class="container">
-            {% block content %}
-            {% endblock %}
-        </div>
-    </div>
-</div>
+      onchange="checker_storage()" data-bs-theme="dark">
 
+{% block navbar %}
+{% endblock %}
+{% block content %}
+{% endblock %}
 </body>
 </html>

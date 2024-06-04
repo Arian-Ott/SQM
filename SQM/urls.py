@@ -17,11 +17,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from auth0.views import sign_up
+from auth0.views import sign_up,logout_usr
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("home.urls")),
     path("hello/", sign_up, name="hello"),
+    path("logout/", logout_usr, name="logout"),
     path("", include("django.contrib.auth.urls")),
 ]

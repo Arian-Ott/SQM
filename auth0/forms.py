@@ -11,7 +11,7 @@ class SuperUserCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        model.is_superuser = True
+
         fields = [
             "username",
             "first_name",
@@ -21,6 +21,7 @@ class SuperUserCreationForm(UserCreationForm):
             "password1",
             "password2",
         ]
+
 
 
 class RegisterForm(UserCreationForm):
