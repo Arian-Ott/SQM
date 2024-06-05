@@ -6,7 +6,7 @@ services:
     image: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: sqm
-      MYSQL_DATABASE: sqm
+      MYSQL_DATABASE: sqm-test
       MYSQL_USER: sqm-user
       MYSQL_PASSWORD: sqm
     volumes:

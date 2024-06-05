@@ -1,3 +1,4 @@
+import uuid
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 
 import pymysql
@@ -6,19 +7,20 @@ from django.contrib.auth import get_user_model
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-
+from .models import UserTemp, DB, DBUser
 from SQM import settings
 from .forms import DBCreateForm, DBUserForm
-
+from .models import Token
 
 
 def encrypt(data):
     settings.FERNET_KEY = Fernet.generate_key()
     return urlsafe_b64encode(Fernet(settings.FERNET_KEY).encrypt(str(data).encode("utf-8"))).decode('utf-8')
 
-def decrypt(data):
 
+def decrypt(data):
     return Fernet(settings.FERNET_KEY).decrypt(urlsafe_b64decode(data).decode("utf-8")).decode("utf-8")
+
 
 def prefunction(request):
     if len(get_user_model().objects.all()) == 0:
@@ -34,7 +36,7 @@ def create_db(request):
             form.full_clean()
             frm = form.save(commit=False)
             frm.owner = request.user
-            form.save()
+            frm.save()
 
             try:
 
@@ -49,7 +51,7 @@ def create_db(request):
             except pymysql.Error as e:
                 return render(request, "dashboard/create_db.html", context={"form": DBCreateForm(), "error": str(e)})
             tmp = dict(form.cleaned_data)
-
+            tmp["id"] = frm.pk
             return redirect(
                 f"/dashboard/user-creation/{encrypt(tmp)}")
     return render(request, "dashboard/create_db.html", context={"form": DBCreateForm()})
@@ -57,11 +59,12 @@ def create_db(request):
 
 @login_required(login_url='/login', redirect_field_name='n')
 def create_db_user(request, temp):
-
-
     data = eval(decrypt(temp))
-
+    for _ in range(10):
+        print()
     print(data)
+    for _ in range(10):
+        print()
     conn = pymysql.connect(host=data["db_host"], port=data["db_port"], user=data["db_root"], password=data["root_pw"],
                            db=data["name"])
     cur = conn.cursor()
@@ -69,13 +72,13 @@ def create_db_user(request, temp):
         form = DBUserForm(request.POST)
         if form.is_valid():
             form.full_clean()
-            frm = form.save(commit=False)
-            frm.created_by = request.user
-            form.save()
-
+            frma = form.save(commit=False)
+            frma.created_by = request.user
+            frma.save()
+            print(frma.pk)
             data["username"] = form.cleaned_data.get("username")
             data["password"] = form.cleaned_data.get("password")
-
+            data["db_uid"] = frma.pk
             try:
                 with conn.cursor() as cur:
                     # Create user query
@@ -92,8 +95,48 @@ def create_db_user(request, temp):
             return redirect(f"/dashboard/overview/{encrypt(data)}")
     return render(request, "dashboard/create_user.html", context={"form": DBUserForm()})
 
+
 @login_required(login_url='/login', redirect_field_name='n')
 def overview(request, temp):
     data = eval(decrypt(temp))
+    print(data)
+    usr = UserTemp()
+    usr.added_by = request.user
+    usr.db = DB.objects.get(pk=data["id"])
+    usr.db_user = DBUser.objects.get(pk=data["db_uid"])
+    usr.save()
 
-    return render(request, "dashboard/overview.html", context={"username": data["username"], "password": data["password"], "db_host": data["db_host"], "db_name": data["name"], "db_port": data["db_port"]} )
+    return render(request, "dashboard/overview.html",
+                  context={"username": data["username"], "password": data["password"], "db_host": data["db_host"],
+                           "db_name": data["name"], "db_port": data["db_port"]})
+
+
+@login_required(login_url='/login')
+def dashboard(request):
+    dbs = DB.objects.filter(owner_id=request.user.pk)
+    tmp =[]
+    for a in dbs:
+        tmp.append({"name": a.name,"host":a.db_host,"port":a.db_port, "user": a.db_root, "overview":a.url_id, "del": a.revocation_id})
+    print(tmp)
+    return render(request, "dashboard/dashboard.html", context={"dbs": tmp})
+
+@login_required(login_url="/login")
+def details(request, temp):
+    try:
+
+        db = DB.objects.get(url_id=temp)
+        pw = db.root_pw
+        _user_fernet = Token.objects.get(owner_id=request.user.pk).fernet
+        Fernet(Token.objects.get(owner_id=request.user.pk).fernet).decrypt(str(pw).encode())
+        return render(request, "dashboard/details.html",
+                      context={"name": db.name, "host": db.db_host, "root": db.db_root, "db_port": db.db_port,
+                               "dbs": 1, "root_pw": pw})
+
+    except DB.DoesNotExist:
+        return render(request, "dashboard/details.html", context={"dbs": 0})
+
+
+
+
+
+
