@@ -1,0 +1,28 @@
+{% extends "_nav_logged_in.html" %}
+{% load static %}
+{% block menu %}
+    {% if not auth %}
+        <a href="/login">Login</a>
+
+    {% else %}
+        <span> Hello, {{ username }}</span>
+        <div></div>
+
+    {% endif %}
+{% endblock %}
+{% block main %}
+    <h1>SUDO settings</h1>
+    <div class="row row-deck row-cols-2 row-cards">
+        {% for foo in sudo_view %}
+            <div class="col-md-2">
+
+                <div class="card col-auto">
+                    <div class="card-title card-header">{{ foo.title }}</div>
+                    <div class="card-body"><a href="/{{ foo.url }}" class="btn btn-info">{{ foo.button }}</a></div>
+                </div>
+
+            </div>
+        {% endfor %}
+
+
+{% endblock %}
