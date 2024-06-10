@@ -12,7 +12,11 @@
 {% endblock %}
 {% block main %}
 
+{% if db == 0  %}
+<div class="alert-important alert  alert-danger" role="alert">No DB found!</div>
+    <a href="/dashboard" class="btn btn-info">Bring me back</a>
 
+{% else %}
 
 
     <div class="container ">
@@ -20,12 +24,12 @@
             <div class="col col-login mx-auto theme-icon-when-auto">
                 <div class="container p-4">
 
-                    <h1>My Databases</h1>
+                    <h1>Details: {{ name }}</h1>
                 </div>
             </div>
         </div>
  </div>
-        {% for foo in dbs %}
+
 
             <div class="container flex-container  border-top-4 ">
 
@@ -46,18 +50,22 @@
                                 <table style="font-size: larger">
                                     <tr>
                                         <td>Host:</td>
-                                        <td><code>{{ foo.host }}</code></td>
+                                        <td><code>{{ host }}</code></td>
                                     </tr>
                                     <tr>
                                         <td>Port:</td>
-                                        <td><code>{{ foo.port }}</code></td>
+                                        <td><code>{{ db_port }}</code></td>
                                     </tr>
                                     <tr>
                                         <td>admin</td>
-                                        <td><code>{{ foo.user }}</code></td>
+                                        <td><code>{{ root }}</code></td>
                                     </tr>
-                                    <tr><td><a href="/dashboard/i/{{ foo.overview }}" class="btn btn-info">Overview</a> </td>
-                                    <td><a href="/dashboard/del/{{ foo.del }}" class="btn btn-danger">DELETE</a></td>
+
+                                    <tr>
+                                        <td>root pw</td><td><code>{{ root_pw }}</code></td>
+                                    </tr>
+                                    <tr><td><a href="/" class="btn btn-info">Overview</a> </td>
+                                    <td><a href="/" class="btn btn-danger">DELETE</a></td>
                                     </tr>
                                 </table>
 
@@ -71,11 +79,11 @@
              </div>
 
 
-        {% endfor %}
 
 
 
 
+{% endif %}
 
 
 

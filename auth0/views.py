@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Permission
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
-
+from Settings.models import Token
 from .forms import RegisterForm, SuperUserCreationForm
 
 
@@ -24,6 +24,9 @@ def sign_up(request):
                 usr = User.objects.get(username=user.username)
                 usr.is_superuser = True
                 usr.save()
+
+            tkn = Token.objects.create(owner=User.objects.get(pk=user.pk))
+            tkn.save()
             login(request, user)
 
             return redirect("/")
