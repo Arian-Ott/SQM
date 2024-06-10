@@ -1,12 +1,10 @@
 version: '3.8'
-volumes:
-  data:
 services:
   db:
-    image: mariadb
+    image: mariadb:latest
     environment:
       MYSQL_ROOT_PASSWORD: sqm
-      MYSQL_DATABASE: sqm-test
+      MYSQL_DATABASE: sqm
       MYSQL_USER: sqm-user
       MYSQL_PASSWORD: sqm
     volumes:
@@ -15,3 +13,24 @@ services:
     ports:
       - "3306:3306"
 
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "bash", "start.sh" ]
+
+
+    volumes:
+      - .:/app
+    ports:
+      - "8001:8001"
+    expose:
+      - 8001:8001
+    depends_on:
+      - db
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+
+volumes:
+  data:
