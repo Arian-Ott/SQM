@@ -14,6 +14,19 @@
 #
 #      You should have received a copy of the GNU General Public License
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#      This program is free software: you can redistribute it and/or modify
+#      it under the terms of the GNU General Public License as published by
+#      the Free Software Foundation, either version 3 of the License, or
+#      (at your option) any later version.
+#
+#      This program is distributed in the hope that it will be useful,
+#      but WITHOUT ANY WARRANTY; without even the implied warranty of
+#      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#      GNU General Public License for more details.
+#
+#      You should have received a copy of the GNU General Public License
+#      along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import uuid
@@ -104,3 +117,13 @@ class UserTemp(models.Model):
     added_by = models.ForeignKey(User, on_delete=models.CASCADE)
     db = models.ForeignKey(DB, on_delete=models.CASCADE)
     db_user = models.ForeignKey(DBUser, on_delete=models.CASCADE)
+
+
+class TempToken(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4)
+    fernet = models.BinaryField()
+    date_added = models.DateTimeField(auto_now_add=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        self.fernet = Fernet.generate_key()
+        super().save(*args, **kwargs)

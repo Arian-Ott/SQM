@@ -75,7 +75,8 @@
                                         <td><a class="btn btn-muted cursor-not-allowed ">Deactivate User</a></td>
                                         <td><a class="btn btn-muted cursor-not-allowed ">DELETE</a></td>
                                     {% else %}
-                                        <td><a class="btn btn-info">Edit Userinfo</a>
+                                        <td><a class="btn btn-info"
+                                               href="/sudo/users/edit/{{ user.uuid }}/{{ user.url }}">Edit Userinfo</a>
                                         <td>
                                         <td><a class="btn btn-warning ">Deactivate User</a></td>
                                         <td><a class="btn btn-danger ">DELETE</a></td>
