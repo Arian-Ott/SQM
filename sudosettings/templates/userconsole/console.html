@@ -1,0 +1,108 @@
+{% extends '_nav_logged_in.html' %}
+{% load crispy_forms_filters %} {% block title %}Sign Up{% endblock %}
+{% load crispy_forms_tags %}
+{% block main %}
+
+    {% if error %}
+        <div class="alert alert-danger alert-info " role="alert">
+            <div class="d-flex">
+                <div>
+
+
+                </div>
+                <div>
+                    {{ error }}
+                </div>
+            </div>
+
+        </div>
+    {% endif %}
+
+
+    {% for user in users %}
+
+        <div class="container flex-container  border-top-4 ">
+
+            <div class="card space-y-3 border-2 ">
+
+                <div class="card-body p-6 theme-toggle  ">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="card-title align-content-center center"><span style="font-size: x-large">Username: <code>{{ user.username }}</code></span>
+                            </div>
+
+                            <div class="card-body">
+                                <table style="font-size: larger" class="row-cols-3">
+                                    <tr>
+                                        <td>First Name:</td>
+                                        <td><code>{{ user.first_name }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last Name:</td>
+                                        <td><code>{{ user.last_name }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td>SUDO:</td>
+                                        <td><code>{{ user.is_superuser }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Is Activated:</td>
+                                        <td><code>{{ user.is_active }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last login:</td>
+                                        <td><code>{{ user.last_logged_in_date }}</code> at
+                                            <code>{{ user.last_login_time }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td>User ID:</td>
+                                        <td>{{ user.user_id }}</td>
+                                    </tr>
+
+
+                                </table>
+                                <table>
+                                    {% if user.user_id == user.request_id or user.user_id == 1 and user.user.is_superuser %}
+
+                                        <td><a href="/dashboard/i/{{ foo.overview }}"
+                                               class="btn btn-info d-inline-flex">Edit Userinfo</a>
+                                        <td>
+                                        <td><a class="btn btn-muted cursor-not-allowed ">Deactivate User</a></td>
+                                        <td><a class="btn btn-muted cursor-not-allowed ">DELETE</a></td>
+                                    {% else %}
+                                        <td><a class="btn btn-info"
+                                               href="/sudo/users/edit/{{ user.uuid }}/{{ user.url }}">Edit Userinfo</a>
+                                        <td>
+                                        <td><a class="btn btn-warning ">Deactivate User</a></td>
+                                        <td><a class="btn btn-danger ">DELETE</a></td>
+                                    {% endif %}
+
+                                </table>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    {% endfor %}
+
+
+
+    <form method="post">
+        {% csrf_token %}{{ form | crispy }}
+
+        <button type="submit" class="btn btn-success">Add User</button>
+    </form>
+
+
+{% endblock %}

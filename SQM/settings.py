@@ -26,6 +26,32 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 #
 #      You should have received a copy of the GNU General Public License
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#      This program is free software: you can redistribute it and/or modify
+#      it under the terms of the GNU General Public License as published by
+#      the Free Software Foundation, either version 3 of the License, or
+#      (at your option) any later version.
+#
+#      This program is distributed in the hope that it will be useful,
+#      but WITHOUT ANY WARRANTY; without even the implied warranty of
+#      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#      GNU General Public License for more details.
+#
+#      You should have received a copy of the GNU General Public License
+#      along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#      This program is free software: you can redistribute it and/or modify
+#      it under the terms of the GNU General Public License as published by
+#      the Free Software Foundation, either version 3 of the License, or
+#      (at your option) any later version.
+#
+#      This program is distributed in the hope that it will be useful,
+#      but WITHOUT ANY WARRANTY; without even the implied warranty of
+#      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#      GNU General Public License for more details.
+#
+#      You should have received a copy of the GNU General Public License
+#      along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
 from pathlib import Path
@@ -44,7 +70,7 @@ SECRET_KEY = "django-insecure-z@k4l05tf+rjft3&u(lz(s1*u@3fw#5n=gp^lbrhn$_=&3sskc
 FERNET_KEY = Fernet.generate_key()
 DEFAULT_FERNET_KEY = Fernet.generate_key()
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0", "0.0.0.0:8001"]
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
@@ -65,7 +91,8 @@ INSTALLED_APPS = [
     "auth0",
     "crispy_forms",
     "crispy_bootstrap5",
-    "Settings"
+    "Settings",
+    "sudosettings.apps.SudosettingsConfig"
 ]
 
 MIDDLEWARE = [
@@ -110,7 +137,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "OPTIONS": {
             "user": "root",
-            "host": "db",
+            "host": "127.0.0.1",
             "password": "sqm",
             "database": "sqm",
         },
@@ -140,7 +167,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-uk"
 
 TIME_ZONE = "UTC"
 
