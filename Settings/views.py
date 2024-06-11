@@ -14,6 +14,19 @@
 #
 #      You should have received a copy of the GNU General Public License
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#      This program is free software: you can redistribute it and/or modify
+#      it under the terms of the GNU General Public License as published by
+#      the Free Software Foundation, either version 3 of the License, or
+#      (at your option) any later version.
+#
+#      This program is distributed in the hope that it will be useful,
+#      but WITHOUT ANY WARRANTY; without even the implied warranty of
+#      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#      GNU General Public License for more details.
+#
+#      You should have received a copy of the GNU General Public License
+#      along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 
@@ -24,18 +37,19 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from SQM import settings
 from .forms import DBCreateForm, DBUserForm
-from .models import DB, DBUser, Token, UserTemp
+from .models import DB, DBUser, TempToken, Token, UserTemp
 
 
-def encrypt(data):
-    settings.FERNET_KEY = Fernet.generate_key()
-    return urlsafe_b64encode(Fernet(settings.FERNET_KEY).encrypt(str(data).encode("utf-8"))).decode('utf-8')
+def encrypt(data, uid):
+    fernet_key = TempToken.objects.get(uuid=uid).fernet
+    return urlsafe_b64encode(Fernet(fernet_key).encrypt(str(data).encode("utf-8"))).decode('utf-8')
 
 
-def decrypt(data):
-    return Fernet(settings.FERNET_KEY).decrypt(urlsafe_b64decode(data).decode("utf-8")).decode("utf-8")
+def decrypt(data, uid):
+    fernet_key = TempToken.objects.get(uuid=uid).fernet
+
+    return Fernet(fernet_key).decrypt(urlsafe_b64decode(data).decode("utf-8")).decode("utf-8")
 
 
 def prefunction(request):
@@ -68,14 +82,20 @@ def create_db(request):
                 return render(request, "dashboard/create_db.html", context={"form": DBCreateForm(), "error": str(e)})
             tmp = dict(form.cleaned_data)
             tmp["id"] = frm.pk
+            token = TempToken()
+            token.save()
+            uid = token.uuid
+            request.session['uid'] = str(uid)
             return redirect(
-                f"/dashboard/user-creation/{encrypt(tmp)}")
+                f"/dashboard/user-creation/{encrypt(tmp, uid)}")
     return render(request, "dashboard/create_db.html", context={"form": DBCreateForm()})
 
 
 @login_required(login_url='/login', redirect_field_name='n')
 def create_db_user(request, temp):
-    data = eval(decrypt(temp))
+    uid = request.session['uid']
+    print(uid)
+    data = eval(decrypt(temp, uid))
 
     conn = pymysql.connect(host=data["db_host"], port=data["db_port"], user=data["db_root"], password=data["root_pw"],
                            db=data["name"])
@@ -104,20 +124,28 @@ def create_db_user(request, temp):
                     conn.commit()
             finally:
                 conn.close()
-            return redirect(f"/dashboard/overview/{encrypt(data)}")
+                TempToken.objects.get(uuid=uid).delete()
+
+                token = TempToken()
+                token.save()
+                uid = token.uuid
+                request.session['uid'] = str(uid)
+            return redirect(f"/dashboard/overview/{encrypt(data, uid)}")
     return render(request, "dashboard/create_user.html", context={"form": DBUserForm()})
 
 
 @login_required(login_url='/login', redirect_field_name='n')
 def overview(request, temp):
-    data = eval(decrypt(temp))
+    uid = request.session["uid"]
+    data = eval(decrypt(temp, uid))
     print(data)
     usr = UserTemp()
     usr.added_by = request.user
     usr.db = DB.objects.get(pk=data["id"])
     usr.db_user = DBUser.objects.get(pk=data["db_uid"])
     usr.save()
-
+    TempToken.objects.get(uuid=uid).delete()
+    del request.session["uid"]
     return render(request, "dashboard/overview.html",
                   context={"username": data["username"], "password": data["password"], "db_host": data["db_host"],
                            "db_name": data["name"], "db_port": data["db_port"]})
