@@ -18,7 +18,12 @@
     {% endif %}
 
 <form method="post">
-  {% csrf_token %}{{form | crispy }}
+    {% csrf_token %}
+    {{ form | crispy }}
+    {% if check == 1 %}
+        <label>Security Token: {{ rand_token }}</label>
+    {% endif %}
+    <hr>
   Have an account? Login <a href="/login">Here</a>!
   <button type="submit" class="btn btn-success">Register</button>
 </form>
