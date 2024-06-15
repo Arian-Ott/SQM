@@ -1,5 +1,9 @@
 name: Django CI 
 on: [push]
+env:
+  DOCKER_ORG: your_docker_org
+  DOCKER_REPO: your_repo_name
+  DOCKER_LATEST: latest
 
 jobs:
   build:
@@ -61,7 +65,7 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: 192.168.1.63:3000
-        username: ${{ env.OWNER }}
+        username: ${{env.OWNER }}
         password: ${{ secrets.TOKEN }}
 
     - name: Build and push Docker image
