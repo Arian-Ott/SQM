@@ -73,7 +73,7 @@ jobs:
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
-          192.168.1.63:3000/arian.ott/SQM/SQM:latest
+          192.168.1.63:3000/arian.ott/sqm/sqm:latest
 
     - name: Cleanup
       run: |
