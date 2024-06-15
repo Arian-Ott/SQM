@@ -53,6 +53,7 @@ jobs:
     - name: Build docker image
       run: |
         docker build . 
+
         
     - name: Extract metadata (tags, labels) for Docker
       id: meta
@@ -62,11 +63,8 @@ jobs:
           192.168.1.63:3000/${{ env.OWNER }}/${{ env.REPO }}
 
     - name: Log in to Gitea Container Registry
-      uses: docker/login-action@v2
-      with:
-        registry: 192.168.1.63:3000
-        username: ${{env.OWNER }}
-        password: ${{ secrets.TOKEN }}
+      run: |
+        docker login -u ${{env.OWNER}} -p ${{secrets.TOKEN}}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
