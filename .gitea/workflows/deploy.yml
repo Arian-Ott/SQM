@@ -57,7 +57,7 @@ jobs:
       uses: docker/metadata-action@v4
       with:
         images: |
-          192.168.1.63:3000/${{ env.DOCKER_ORG }}/${{ env.DOCKER_REPO }}
+          192.168.1.63:3000/${{ env.OWNER }}/${{ env.REPO }}
 
     - name: Log in to Gitea Container Registry
       run: echo "${{ secrets.TOKEN }}" | docker login 192.168.1.63:3000 -u ${{ env.OWNER }} --password-stdin
@@ -70,7 +70,7 @@ jobs:
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
-          192.168.1.63:3000/${{ env.DOCKER_ORG }}/${{ steps.meta.outputs.repo }}:${{ steps.meta.outputs.tags }}
+          192.168.1.63:3000/${{ env.OWNER }}/${{ steps.meta.outputs.repo }}:${{ steps.meta.outputs.tags }}
     - name: cleanup
       run:  for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
       
