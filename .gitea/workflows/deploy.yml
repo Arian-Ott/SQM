@@ -47,6 +47,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Build docker image
+      run: |
+        docker build . 
+        
         
     - name: Extract metadata (tags, labels) for Docker
       id: meta
@@ -56,7 +60,7 @@ jobs:
           192.168.1.63:3000/${{ env.DOCKER_ORG }}/${{ env.DOCKER_REPO }}
 
     - name: Log in to Gitea Container Registry
-      run: echo "${{ secrets.GITEA_REGISTRY_PASSWORD }}" | docker login 192.168.1.63:3000 -u ${{ secrets.GITEA_REGISTRY_USERNAME }} --password-stdin
+      run: echo "${{ secrets.TOKEN }}" | docker login 192.168.1.63:3000 -u ${{ env.OWNER }} --password-stdin
       
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
