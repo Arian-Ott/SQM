@@ -42,8 +42,7 @@ jobs:
         sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose -y
         sudo apt autoremove -y
         # Ensure Docker is started
-        sudo dockerd &
-        sleep 10
+        sudo dockerd  & sleep 3
         
     - name: Install Python requirements
       run: |
@@ -74,7 +73,7 @@ jobs:
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
-          192.168.1.63:3000/${{ env.OWNER }}/${{ env.REPO }}:latest
+          192.168.1.63:3000/arian.ott/SQM/SQM:latest
 
     - name: Cleanup
       run: |
