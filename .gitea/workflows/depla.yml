@@ -64,7 +64,7 @@ jobs:
 
     - name: Log in to Gitea Container Registry
       run: |
-        docker login -u ${{env.OWNER}} -p ${{secrets.TOKEN}}
+        docker login --username ${{env.OWNER}} --password ${{secrets.TOKEN}} 
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
