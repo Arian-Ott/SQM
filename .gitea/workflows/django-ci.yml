@@ -40,6 +40,8 @@ jobs:
         pip install -r requirements.txt 
     - name: migrations
       run: |
+        docker kill some-mariadb
+        docker rm some-mariadb
         docker run -d --name some-mariadb -e MYSQL_ROOT_PASSWORD=sqm -e MYSQL_DATABASE=sqm -e MYSQL_USER=sqm-user -e MYSQL_PASSWORD=sqm -p 3306:3306 mariadb:latest
         python manage.py makemigrations
         python manage.py migrate
