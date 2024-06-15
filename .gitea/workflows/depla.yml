@@ -73,7 +73,7 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          https://git.arianott.com/arian.ott/sqm/sqm:latest
+          git.arianott.com/arian.ott/sqm/sqm:latest
 
     - name: Cleanup
       run: |
