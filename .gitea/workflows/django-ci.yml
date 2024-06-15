@@ -18,7 +18,8 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt install wget -y
-        wget https://dlm.mariadb.com/2678574/Connectors/c/connector-c-3.3.3/mariadb-connector-c-3.3.3-debian-bullseye-amd64.tar.gz -O- | tar -zxf - --strip-components=1 -C /us
+        apt install gcc libmariadb3 libmariadb-dev libmariadb-dev-compat -y
+        
         sudo apt install libmariadb3 libmariadb-dev -y
         python -m pip install --upgrade pip
         pip install -r requirements.txt        
