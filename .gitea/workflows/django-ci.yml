@@ -17,6 +17,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
+        for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
         sudo apt update && apt upgrade -y 
         sudo apt install libmariadb3 libmariadb-dev -y
         sudo apt install curl -y
