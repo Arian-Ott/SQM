@@ -51,5 +51,6 @@ jobs:
           tags: | # replace it with your local IP and tags
             192.168.1.63:3000/${{ env.DOCKER_ORG }}/${{ steps.meta.outputs.REPO_NAME }}:${{ steps.meta.outputs.REPO_VERSION }}
             192.168.1.63:3000/${{ env.DOCKER_ORG }}/${{ steps.meta.outputs.REPO_NAME }}:${{ env.DOCKER_LATEST }}
+
    
    
