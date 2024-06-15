@@ -23,7 +23,7 @@ jobs:
         
     - name: Install Dependencies
       run: |
-        for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+       
         sudo apt update && sudo apt upgrade -y 
         sudo apt install libmariadb3 libmariadb-dev -y
         sudo apt install curl -y        
@@ -71,3 +71,6 @@ jobs:
         push: true
         tags: |
           192.168.1.63:3000/${{ env.DOCKER_ORG }}/${{ steps.meta.outputs.repo }}:${{ steps.meta.outputs.tags }}
+    - name: cleanup
+      run:  for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+      
