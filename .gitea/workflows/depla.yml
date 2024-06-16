@@ -1,16 +1,11 @@
 name: Django CI
 on: [push]
-env:
-  DOCKER_ORG: your_docker_org
-  DOCKER_REPO: your_repo_name
-  DOCKER_LATEST: latest
-
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.12]
+        python-version: [3.10,3.11,3.12]
 
     steps:
     - name: Pull latest version
@@ -25,25 +20,22 @@ jobs:
       run: |
         sudo apt update && sudo apt upgrade -y 
         sudo apt install libmariadb3 libmariadb-dev -y
-        sudo apt install curl -y        
+        sudo apt install curl gpg ca-certificates -y
+        sudo install -m 0755 -d /etc/apt/keyrings
+        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+        sudo chmod a+r /etc/apt/keyrings/docker.asc
         
     - name: Install Docker
       run: |
-        sudo apt-get update
-        sudo apt-get install ca-certificates curl gpg -y
-        sudo install -m 0755 -d /etc/apt/keyrings 
-        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-        sudo chmod a+r /etc/apt/keyrings/docker.asc
         echo \
           "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
           $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable" | \
           sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         sudo apt-get update
         sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose -y
-        sudo apt autoremove -y
+        
         # Ensure Docker is started
-        sudo dockerd &
-        sleep 10
+        sudo dockerd
         
     - name: Install Python requirements
       run: |
@@ -52,6 +44,7 @@ jobs:
         
     - name: Build Docker image
       run: |
+        
         docker build -t ${{secrets.REG_DOM}}/sqm-dev/sqm-dev:latest .
 
 
@@ -59,5 +52,11 @@ jobs:
       run: |
         docker login -u ${{secrets.USERNAME_REGISTRY}} -p ${{secrets.PW_REGISTRY}} ${{secrets.REG_DOM}}
         docker push ${{secrets.REG_DOM}}/sqm-dev/sqm-dev:latest
+    - name: cleanup
+      run: |
+        sudo apt-get clean -y
+        sudo apt remove curl docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose -y
+        sudo apt autoremove -y
+        
 
 
