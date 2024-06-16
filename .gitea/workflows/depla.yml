@@ -57,6 +57,7 @@ jobs:
 
     - name: Push Docker image
       run: |
+        docker login -u ${{secrets.USERNAME_REGISTRY}} -p ${{secrets.PW_REGISTRY}} 
         docker push registry.arianott.com/sqm-dev/sqm-dev:latest
 
 
