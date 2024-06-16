@@ -1,7 +1,5 @@
 name: Django CI
-on: 
-  push:
-    branches: main
+on: [push, commit]
 jobs:
   build:
     runs-on: ubuntu-latest
