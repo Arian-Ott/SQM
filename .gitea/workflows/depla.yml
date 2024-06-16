@@ -52,12 +52,12 @@ jobs:
         
     - name: Build Docker image
       run: |
-        docker build -t 192.168.1.88/sqm:latest .
+        docker build -t registry.arianott.com/sqm-dev/sqm-dev:latest .
 
 
     - name: Push Docker image
       run: |
-        docker push 192.168.1.88/sqm:latest
+        docker push registry.arianott.com/sqm-dev/sqm-dev:latest
 
     - name: Cleanup
       run: |
