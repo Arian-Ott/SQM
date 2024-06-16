@@ -52,15 +52,15 @@ jobs:
         
     - name: Build Docker image
       run: |
-        docker build -t arian.ott/sqm:latest .
+        docker build -t sqm:latest .
 
     - name: Tag Docker image
       run: |
-        docker tag arian.ott/sqm:latest 192.168.1.88/arian.ott/sqm:latest
+        docker tag sqm:latest registry.arianott.com/sqm:latest
 
     - name: Push Docker image
       run: |
-        docker push 192.168.1.88/arian.ott/sqm:latest
+        docker push registry.arianott.com/sqm:latest
 
     - name: Cleanup
       run: |
