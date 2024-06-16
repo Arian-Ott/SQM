@@ -61,6 +61,7 @@ jobs:
         sudo apt remove curl docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose -y
         sudo apt autoremove -y
         echo "done"
+        echo "done"
         
         
 
