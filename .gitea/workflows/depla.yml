@@ -52,12 +52,12 @@ jobs:
         
     - name: Build Docker image
       run: |
-        docker build -t registry.arianott.com/sqm-dev/sqm-dev:latest .
+        docker build -t ${{secrets.REG_DOM}}/sqm-dev/sqm-dev:latest .
 
 
     - name: Push Docker image
       run: |
-        docker login -u ${{secrets.USERNAME_REGISTRY}} -p ${{secrets.PW_REGISTRY}} 
-        docker push registry.arianott.com/sqm-dev/sqm-dev:latest
+        docker login -u ${{secrets.USERNAME_REGISTRY}} -p ${{secrets.PW_REGISTRY}} ${{secrets.REG_DOM}}
+        docker push ${{secrets.REG_DOM}}/sqm-dev/sqm-dev:latest
 
 
