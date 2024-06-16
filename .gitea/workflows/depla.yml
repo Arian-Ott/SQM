@@ -51,7 +51,7 @@ jobs:
         
     - name: Build docker image
       run: |
-        docker build . 
+        docker build -t sqm/sqm:latest . 
 
         
     - name: Extract metadata (tags, labels) for Docker
@@ -61,19 +61,11 @@ jobs:
         images: |
           git.arianott.com/${{ env.OWNER }}/${{ env.REPO }}
 
-    - name: Log in to Gitea Container Registry
-      run: |
-        echo "docker login --username ${{env.USR}} --password ${{env.TKN}}" 
+   
 
     - name: Build and push Docker image
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        file: ./Dockerfile
-        platforms: linux/amd64
-        push: true
-        tags: |
-          git.arianott.com/arian.ott/sqm/sqm:latest
+      run: |
+          docker push registry.arianott.com/sqm:latest
 
     - name: Cleanup
       run: |
