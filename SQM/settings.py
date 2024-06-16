@@ -137,7 +137,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "OPTIONS": {
             "user": "root",
-            "host": "127.0.0.1",
+            "host": "db",
             "password": "sqm",
             "database": "sqm",
         },
